@@ -1,0 +1,7 @@
+[project]
+name = "video-data-catalog"
+version = "0.1.0"
+description = "Video data catalog"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
