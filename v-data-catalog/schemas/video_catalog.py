@@ -10,5 +10,5 @@ class FilmInfoBase(BaseModel):
 
 class VideoCatalog(FilmInfoBase):
     """
-    Модель сокращенной ссылки
+    Модель фильма
     """
