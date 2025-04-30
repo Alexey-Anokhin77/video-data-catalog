@@ -2,21 +2,20 @@ from schemas.video_catalog import VideoCatalog
 
 FILM_CATALOG = [
     VideoCatalog(
-        id_film=1,
+        slug="interstellar-2014",
         title_film="Интерстеллар",
-        description_film="Команда астронавтов отправляется сквозь червоточину в поисках нового дома для "
-        "пределов человеческой выносливости.",
+        description_film="about",
         time_film=2.50,
     ),
     VideoCatalog(
-        id_film=2,
+        slug="the-matrix-1999",
         title_film="Матрица",
         description_film="Хакер узнаёт, что мир вокруг — иллюзия, созданная искусственным разумом, "
         "и присоединяется к борьбе за освобождение человечества от машинного контроля.",
         time_film=2.45,
     ),
     VideoCatalog(
-        id_film=3,
+        slug="Inception 2010",
         title_film="Начало",
         description_film="Группа специалистов проникает в подсознание людей, используя технику погружения в "
         "сновидения.",
