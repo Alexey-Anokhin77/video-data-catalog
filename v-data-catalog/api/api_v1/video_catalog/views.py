@@ -9,7 +9,7 @@ import random
 from api.api_v1.video_catalog.crud import FILM_CATALOG
 
 from schemas.video_catalog import VideoCatalog, VideoCreate
-from .dependencies import read_film_id
+from .dependencies import read_film_slug
 
 router = APIRouter(
     prefix="/video-catalog",
@@ -39,13 +39,14 @@ def create_video(
 
 
 @router.get(
-    "/{title_film}/",
+    "/{slug}/",
     response_model=VideoCatalog,
+    summary="Получить фильм по Slug",
 )
 def read_film_details(
-    url: Annotated[
+    film: Annotated[
         VideoCatalog,
-        Depends(read_film_id),
+        Depends(read_film_slug),
     ],
 ) -> VideoCatalog:
-    return url
+    return film
