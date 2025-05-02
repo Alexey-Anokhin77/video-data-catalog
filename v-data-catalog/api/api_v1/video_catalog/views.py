@@ -4,15 +4,15 @@ from fastapi import (
     status,
 )
 from typing import Annotated
-import random
 
-from api.api_v1.video_catalog.crud import FILM_CATALOG
+
+from api.api_v1.video_catalog.crud import storage
 
 from schemas.video_catalog import VideoCatalog, VideoCreate
 from .dependencies import read_film_slug
 
 router = APIRouter(
-    prefix="/video-catalog",
+    prefix="/film-catalog",
     tags=["Film catalog"],
 )
 
@@ -21,8 +21,8 @@ router = APIRouter(
     "/",
     response_model=list[VideoCatalog],
 )
-def read_film_catalog_list():
-    return FILM_CATALOG
+def read_film_catalog_list() -> list[VideoCatalog]:
+    return storage.get()
 
 
 @router.post(
@@ -32,10 +32,8 @@ def read_film_catalog_list():
 )
 def create_video(
     video_create: VideoCreate,
-):
-    return VideoCatalog(
-        **video_create.model_dump(),
-    )
+) -> VideoCatalog:
+    return storage.create(video_create)
 
 
 @router.get(
