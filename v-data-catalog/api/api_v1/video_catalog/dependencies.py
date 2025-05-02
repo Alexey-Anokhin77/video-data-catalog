@@ -1,17 +1,14 @@
 from fastapi import HTTPException
 from starlette import status
 
-from api.api_v1.video_catalog.crud import FILM_CATALOG
+from api.api_v1.video_catalog.crud import storage
 from schemas.video_catalog import VideoCatalog
 
 
 def read_film_slug(
     slug: str,
-) -> VideoCatalog | None:
-    film: VideoCatalog | None = next(
-        (film for film in FILM_CATALOG if film.slug == slug),
-        None,
-    )
+) -> VideoCatalog:
+    film: VideoCatalog | None = storage.get_by_slug(slug=slug)
     if film:
         return film
     raise HTTPException(
