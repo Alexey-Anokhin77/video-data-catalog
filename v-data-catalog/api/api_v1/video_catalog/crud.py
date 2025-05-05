@@ -48,6 +48,12 @@ class VideosStorage(BaseModel):
         self.slug_to_video[film.slug] = film
         return film
 
+    def delete_by_slug(self, slug: str) -> None:
+        self.slug_to_video.pop(slug, None)
+
+    def delete(self, film: VideoCatalog) -> None:
+        self.delete_by_slug(slug=film.slug)
+
 
 storage = VideosStorage()
 
