@@ -5,7 +5,6 @@ from fastapi import (
 )
 from typing import Annotated
 
-
 from api.api_v1.video_catalog.crud import storage
 
 from schemas.video_catalog import VideoCatalog, VideoCreate
@@ -48,3 +47,28 @@ def read_film_details(
     ],
 ) -> VideoCatalog:
     return film
+
+
+@router.delete(
+    "/{slug}/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "description": "Film not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Film 'slug' not found",
+                    },
+                },
+            },
+        },
+    },
+)
+def delete_film(
+    film: Annotated[
+        VideoCatalog,
+        Depends(read_film_slug),
+    ],
+) -> None:
+    storage.delete(film=film)
