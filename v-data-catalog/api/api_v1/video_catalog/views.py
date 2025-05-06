@@ -35,23 +35,8 @@ def create_video(
     return storage.create(video_create)
 
 
-@router.get(
-    "/{slug}/",
-    response_model=VideoCatalog,
-    summary="Получить фильм по Slug",
-)
-def read_film_details(
-    film: Annotated[
-        VideoCatalog,
-        Depends(read_film_slug),
-    ],
-) -> VideoCatalog:
-    return film
-
-
-@router.delete(
-    "/{slug}/",
-    status_code=status.HTTP_204_NO_CONTENT,
+detail_router = APIRouter(
+    prefix="/{slug}",
     responses={
         status.HTTP_404_NOT_FOUND: {
             "description": "Film not found",
@@ -65,6 +50,26 @@ def read_film_details(
         },
     },
 )
+
+
+@detail_router.get(
+    "/",
+    response_model=VideoCatalog,
+    summary="Получить фильм по Slug",
+)
+def read_film_details(
+    film: Annotated[
+        VideoCatalog,
+        Depends(read_film_slug),
+    ],
+) -> VideoCatalog:
+    return film
+
+
+@detail_router.delete(
+    "/",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def delete_film(
     film: Annotated[
         VideoCatalog,
@@ -72,3 +77,6 @@ def delete_film(
     ],
 ) -> None:
     storage.delete(film=film)
+
+
+router.include_router(detail_router)
