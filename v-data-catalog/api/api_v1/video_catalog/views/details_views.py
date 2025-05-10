@@ -5,7 +5,10 @@ from starlette import status
 
 from api.api_v1.video_catalog.crud import storage
 from api.api_v1.video_catalog.dependencies import read_film_slug
-from schemas.video_catalog import VideoCatalog
+from schemas.video_catalog import (
+    Movie,
+    MovieUpdate,
+)
 
 router = APIRouter(
     prefix="/{slug}",
@@ -23,19 +26,35 @@ router = APIRouter(
     },
 )
 
+Movie_BY_Slug = Annotated[
+    Movie,
+    Depends(read_film_slug),
+]
+
 
 @router.get(
     "/",
-    response_model=VideoCatalog,
+    response_model=Movie,
     summary="Получить фильм по Slug",
 )
 def read_film_details(
-    film: Annotated[
-        VideoCatalog,
-        Depends(read_film_slug),
-    ],
-) -> VideoCatalog:
+    film: Movie_BY_Slug,
+) -> Movie:
     return film
+
+
+@router.put(
+    "/",
+    response_model=Movie,
+)
+def update_movie_details(
+    film: Movie_BY_Slug,
+    film_in: MovieUpdate,
+):
+    return storage.update(
+        movie=film,
+        film_in=film_in,
+    )
 
 
 @router.delete(
@@ -43,9 +62,6 @@ def read_film_details(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 def delete_film(
-    film: Annotated[
-        VideoCatalog,
-        Depends(read_film_slug),
-    ],
+    film: Movie_BY_Slug,
 ) -> None:
     storage.delete(film=film)
