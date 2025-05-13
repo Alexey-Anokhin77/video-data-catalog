@@ -55,9 +55,18 @@ class MoviePartialUpdate(BaseModel):
     production_year: Annotated[int, Ge(1900), Le(2100)] | None = None
 
 
+class MovieRead(FilmInfoBase):
+    """
+    Модель для чтения данных о фильме.
+    """
+
+    slug: str
+
+
 class Movie(FilmInfoBase):
     """
     Модель фильма
     """
 
     slug: str
+    notes: str
