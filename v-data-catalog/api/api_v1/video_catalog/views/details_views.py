@@ -8,6 +8,7 @@ from api.api_v1.video_catalog.dependencies import read_film_slug
 from schemas.video_catalog import (
     Movie,
     MovieUpdate,
+    MoviePartialUpdate,
 )
 
 router = APIRouter(
@@ -26,7 +27,7 @@ router = APIRouter(
     },
 )
 
-Movie_BY_Slug = Annotated[
+MovieBySlug = Annotated[
     Movie,
     Depends(read_film_slug),
 ]
@@ -38,7 +39,7 @@ Movie_BY_Slug = Annotated[
     summary="Получить фильм по Slug",
 )
 def read_film_details(
-    film: Movie_BY_Slug,
+    film: MovieBySlug,
 ) -> Movie:
     return film
 
@@ -48,11 +49,25 @@ def read_film_details(
     response_model=Movie,
 )
 def update_movie_details(
-    film: Movie_BY_Slug,
+    film: MovieBySlug,
     film_in: MovieUpdate,
 ):
     return storage.update(
-        movie=film,
+        film=film,
+        film_in=film_in,
+    )
+
+
+@router.patch(
+    "/",
+    response_model=Movie,
+)
+def update_movie_details_partial(
+    film: MovieBySlug,
+    film_in: MoviePartialUpdate,
+) -> Movie:
+    return storage.partial_update(
+        film=film,
         film_in=film_in,
     )
 
@@ -62,6 +77,6 @@ def update_movie_details(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 def delete_film(
-    film: Movie_BY_Slug,
+    film: MovieBySlug,
 ) -> None:
     storage.delete(film=film)
