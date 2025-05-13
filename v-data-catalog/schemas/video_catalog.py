@@ -3,19 +3,25 @@ from typing import Annotated
 from annotated_types import (
     Len,
     MaxLen,
+    Ge,
+    Le,
 )
 from pydantic import (
     BaseModel,
 )
 
+DescriptionString = Annotated[
+    str,
+    MaxLen(1000),
+]
+
 
 class FilmInfoBase(BaseModel):
     time_film: float
     title_film: str
-    description_film: Annotated[
-        str,
-        MaxLen(1000),
-    ] = ""
+    description_film: DescriptionString = ""
+    genre: Annotated[str, MaxLen(50)]
+    production_year: Annotated[int, Ge(1900), Le(2100)]
 
 
 class MovieCreate(FilmInfoBase):
@@ -34,12 +40,19 @@ class MovieUpdate(FilmInfoBase):
     Модель для обновления информации о фильме.
     """
 
-    time_film: float
-    title_film: str
-    description_film: Annotated[
-        str,
-        MaxLen(1000),
-    ]
+    description_film: DescriptionString
+
+
+class MoviePartialUpdate(BaseModel):
+    """
+    Модель для частичного обновления информации о фильме.
+    """
+
+    title_film: str | None = None
+    time_film: float | None = None
+    description_film: DescriptionString | None = None
+    genre: Annotated[str, MaxLen(50)] | None = None
+    production_year: Annotated[int, Ge(1900), Le(2100)] | None = None
 
 
 class Movie(FilmInfoBase):
