@@ -4,30 +4,8 @@ from schemas.video_catalog import (
     Movie,
     MovieCreate,
     MovieUpdate,
+    MoviePartialUpdate,
 )
-
-FILM_CATALOG = [
-    Movie(
-        slug="interstellar-2014",
-        title_film="Интерстеллар",
-        description_film="about",
-        time_film=2.50,
-    ),
-    Movie(
-        slug="the-matrix-1999",
-        title_film="Матрица",
-        description_film="Хакер узнаёт, что мир вокруг — иллюзия, созданная искусственным разумом, "
-        "и присоединяется к борьбе за освобождение человечества от машинного контроля.",
-        time_film=2.45,
-    ),
-    Movie(
-        slug="Inception 2010",
-        title_film="Начало",
-        description_film="Группа специалистов проникает в подсознание людей, используя технику погружения в "
-        "сновидения.",
-        time_film=2.28,
-    ),
-]
 
 
 class VideosStorage(BaseModel):
@@ -57,12 +35,26 @@ class VideosStorage(BaseModel):
 
     def update(
         self,
-        movie: Movie,
+        film: Movie,
         film_in: MovieUpdate,
+    ) -> Movie:  # Получаем словарь с данными
+        update_data = film_in.model_dump()
+        # Обновляем поля
+        for field_name, value in update_data.items():
+            setattr(film, field_name, value)
+        return film
+
+    def partial_update(
+        self,
+        film: Movie,
+        film_in: MoviePartialUpdate,
     ) -> Movie:
-        for field_name, value in film_in:
-            setattr(movie, field_name, value)
-        return movie
+        # Получаем только переданные поля
+        update_data = film_in.model_dump(exclude_unset=True)
+        # Обновляем только указанные поля
+        for field_name, value in update_data.items():
+            setattr(film, field_name, value)
+        return film
 
 
 storage = VideosStorage()
@@ -71,6 +63,8 @@ storage.create(
     MovieCreate(
         slug="interstellar-2014",
         title_film="Интерстеллар",
+        genre="Научная фантастика",
+        production_year=2014,
         description_film="Фильм «Интерстеллар» рассказывает историю группы астронавтов, отправившихся сквозь "
         "червоточину в космос в поисках нового дома для человечества, столкнувшегося с угрозой "
         "голода и истощения ресурсов Земли.",
@@ -81,6 +75,8 @@ storage.create(
     MovieCreate(
         slug="the-matrix-1999",
         title_film="Матрица",
+        genre="Научная фантастика",
+        production_year=1999,
         description_film="Хакер узнаёт, что мир вокруг — иллюзия, созданная искусственным разумом, "
         "и присоединяется к борьбе за освобождение человечества от машинного контроля.",
         time_film=2.45,
@@ -88,8 +84,10 @@ storage.create(
 )
 storage.create(
     MovieCreate(
-        slug="Inception 2010",
+        slug="inception-2010",
         title_film="Начало",
+        genre="Научная фантастика",
+        production_year=2010,
         description_film="Группа специалистов проникает в подсознание людей, используя технику погружения в "
         "сновидения.",
         time_film=2.28,
