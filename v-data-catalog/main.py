@@ -6,7 +6,7 @@ from fastapi import (
 from api import router as api_router
 
 app = FastAPI(
-    title="Video Data Catalog",
+    title="Films Data Catalog",
 )
 
 app.include_router(api_router)
