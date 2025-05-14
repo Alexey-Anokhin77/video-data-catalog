@@ -43,7 +43,7 @@ class MovieUpdate(FilmInfoBase):
     description_film: DescriptionString
 
 
-class MoviePartialUpdate(BaseModel):
+class MoviePartialUpdate(FilmInfoBase):
     """
     Модель для частичного обновления информации о фильме.
     """
@@ -69,4 +69,4 @@ class Movie(FilmInfoBase):
     """
 
     slug: str
-    notes: str
+    notes: str = ""
