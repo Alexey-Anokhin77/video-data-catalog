@@ -1,10 +1,16 @@
+import logging
 from fastapi import (
     FastAPI,
     Request,
 )
+from core import config
 
 from api import router as api_router
 
+logging.basicConfig(
+    level=config.LOG_LEVEL,
+    format=config.LOG_FORMAT,
+)
 app = FastAPI(
     title="Films Data Catalog",
 )
