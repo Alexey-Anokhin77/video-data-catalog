@@ -33,6 +33,22 @@ class VideoStorage(BaseModel):
             MOVIES_STORAGE_FILEPATH.read_text(encoding="utf-8")
         )
 
+    def init_storage_from_state(self) -> None:
+        try:
+            data = VideoStorage.from_state()
+        except ValidationError:
+            self.save_state()
+            log.warning("Rewritten storage file due to validation error.")
+            return
+
+        # обновление свойства напрямую
+        # если будут новые свойства,
+        # то их тоже надо обновить.
+        self.slug_to_video.update(
+            data.slug_to_video,
+        )
+        log.warning("Recovered data from storage file.")
+
     # Получение списка
     def get(self) -> list[Movie]:
         return list(self.slug_to_video.values())
@@ -84,13 +100,7 @@ class VideoStorage(BaseModel):
         return film
 
 
-try:
-    storage = VideoStorage.from_state()
-    log.warning("Recovered data from storage file.")
-except ValidationError:
-    storage = VideoStorage()
-    storage.save_state()
-    log.warning("Rewritten storage file due to validation error.")
+storage = VideoStorage()
 
 
 # storage.create(
