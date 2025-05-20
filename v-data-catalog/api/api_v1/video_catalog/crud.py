@@ -18,6 +18,10 @@ class VideoStorage(BaseModel):
 
     # Метод сохранения данных локально на жесткий диск
     def save_state(self) -> None:
+        for _ in range(30_000):
+            MOVIES_STORAGE_FILEPATH.write_text(
+                self.model_dump_json(indent=2), encoding="utf-8"
+            )
         MOVIES_STORAGE_FILEPATH.write_text(
             self.model_dump_json(indent=2), encoding="utf-8"
         )
@@ -63,13 +67,11 @@ class VideoStorage(BaseModel):
             **video_in.model_dump(),
         )
         self.slug_to_video[film.slug] = film
-        self.save_state()
         log.info("Movie successfully created!")
         return film
 
     def delete_by_slug(self, slug: str) -> None:
         self.slug_to_video.pop(slug, None)
-        self.save_state()
 
     def delete(self, film: Movie) -> None:
         self.delete_by_slug(slug=film.slug)
@@ -83,7 +85,6 @@ class VideoStorage(BaseModel):
         # Обновляем поля
         for field_name, value in update_data.items():
             setattr(film, field_name, value)
-        self.save_state()
         return film
 
     def partial_update(
@@ -96,7 +97,6 @@ class VideoStorage(BaseModel):
         # Обновляем только указанные поля
         for field_name, value in update_data.items():
             setattr(film, field_name, value)
-        self.save_state()
         return film
 
 
