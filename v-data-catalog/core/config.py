@@ -17,5 +17,6 @@ API_TOKENS: frozenset[str] = frozenset(
     {
         "Kn6VbFKNiVoLsCLLGJrVpg",
         "cuL_J6SAENR79FGGlxy_yA",
+        "SKNsdZnA7TfLskX85TvZNg",
     }
 )
