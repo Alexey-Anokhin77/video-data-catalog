@@ -9,6 +9,7 @@ from api.api_v1.video_catalog.crud import storage
 from api.api_v1.video_catalog.dependencies import (
     save_storage_state,
     api_token_required_for_unsafe_methods,
+    basic_user_auth_required_for_unsafe_methods,
 )
 
 from schemas.video_catalog import (
@@ -22,12 +23,13 @@ router = APIRouter(
     tags=["Film catalog"],
     dependencies=[
         Depends(save_storage_state),
-        Depends(api_token_required_for_unsafe_methods),
+        # Depends(api_token_required_for_unsafe_methods),
+        Depends(basic_user_auth_required_for_unsafe_methods),
     ],
     responses={
         # status.HTTP_204_NO_CONTENT: None,
         status.HTTP_401_UNAUTHORIZED: {
-            "description": "Unauthenticated. Only  for unsafe methods.",
+            "description": "Unauthenticated. Only for unsafe methods.",
             "content": {
                 "application/json": {
                     "example": {
