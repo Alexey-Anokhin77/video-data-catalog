@@ -18,8 +18,13 @@ from fastapi.security import (
 from starlette import status
 
 from api.api_v1.video_catalog.crud import storage
-from core.config import API_TOKENS, USERS_DB
+from core.config import (
+    REDIS_TOKENS_SET_NAME,
+    USERS_DB,
+)
 from schemas.video_catalog import Movie
+
+from .redis import redis_tokens
 
 
 log = logging.getLogger(__name__)
@@ -74,7 +79,10 @@ def save_storage_state(
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
-    if api_token.credentials in API_TOKENS:
+    if redis_tokens.sismember(
+        REDIS_TOKENS_SET_NAME,
+        api_token.credentials,
+    ):
         return
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
