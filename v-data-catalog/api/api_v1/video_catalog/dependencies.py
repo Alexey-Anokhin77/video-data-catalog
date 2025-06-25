@@ -19,7 +19,6 @@ from starlette import status
 
 from api.api_v1.video_catalog.crud import storage
 from core.config import (
-    REDIS_TOKENS_SET_NAME,
     USERS_DB,
 )
 from schemas.video_catalog import Movie
@@ -79,8 +78,7 @@ def save_storage_state(
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):
-    if redis_tokens.sismember(
-        REDIS_TOKENS_SET_NAME,
+    if redis_tokens.token_exist(
         api_token.credentials,
     ):
         return
