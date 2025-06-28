@@ -1,3 +1,4 @@
+import json
 import logging
 
 from pydantic import BaseModel, ValidationError
@@ -68,7 +69,12 @@ class VideoStorage(BaseModel):
 
     # Получение по slug
     def get_by_slug(self, slug: str) -> Movie | None:
-        return self.slug_to_video.get(slug)
+        if movies_data := redis.hget(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=slug,
+        ):
+            return Movie.model_validate_json(movies_data)
+        return None
 
     # Создание нового видео
     def create(self, video_in: MovieCreate) -> Movie:
@@ -114,39 +120,3 @@ class VideoStorage(BaseModel):
 
 
 storage = VideoStorage()
-
-
-# storage.create(
-#     MovieCreate(
-#         slug="interstellar-2014",
-#         title_film="Интерстеллар",
-#         genre="Научная фантастика",
-#         production_year=2014,
-#         description_film="Фильм «Интерстеллар» рассказывает историю группы астронавтов, отправившихся сквозь "
-#         "червоточину в космос в поисках нового дома для человечества, столкнувшегося с угрозой "
-#         "голода и истощения ресурсов Земли.",
-#         time_film=2.50,
-#     ),
-# )
-# storage.create(
-#     MovieCreate(
-#         slug="the-matrix-1999",
-#         title_film="Матрица",
-#         genre="Научная фантастика",
-#         production_year=1999,
-#         description_film="Хакер узнаёт, что мир вокруг — иллюзия, созданная искусственным разумом, "
-#         "и присоединяется к борьбе за освобождение человечества от машинного контроля.",
-#         time_film=2.45,
-#     ),
-# )
-# storage.create(
-#     MovieCreate(
-#         slug="inception-2010",
-#         title_film="Начало",
-#         genre="Научная фантастика",
-#         production_year=2010,
-#         description_film="Группа специалистов проникает в подсознание людей, используя технику погружения в "
-#         "сновидения.",
-#         time_film=2.28,
-#     ),
-# )
