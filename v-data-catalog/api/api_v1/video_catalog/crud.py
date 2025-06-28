@@ -1,4 +1,3 @@
-import json
 import logging
 
 from pydantic import BaseModel, ValidationError
@@ -65,7 +64,10 @@ class VideoStorage(BaseModel):
 
     # Получение списка
     def get(self) -> list[Movie]:
-        return list(self.slug_to_video.values())
+        return [
+            Movie.model_validate_json(value)
+            for value in redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+        ]
 
     # Получение по slug
     def get_by_slug(self, slug: str) -> Movie | None:
