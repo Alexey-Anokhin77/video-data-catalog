@@ -95,7 +95,8 @@ class VideoStorage(BaseModel):
         return movie
 
     def delete_by_slug(self, slug: str) -> None:
-        self.slug_to_video.pop(slug, None)
+        """Удаляет фильм по slug. Не возвращает статус операции."""
+        redis.hdel(config.REDIS_MOVIES_HASH_NAME, slug)
 
     def delete(self, movie: Movie) -> None:
         self.delete_by_slug(slug=movie.slug)

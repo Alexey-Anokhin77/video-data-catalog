@@ -82,6 +82,6 @@ def update_movie_details_partial(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 def delete_film(
-    film: MovieBySlug,
+    movie: MovieBySlug,
 ) -> None:
-    storage.delete(film=film)
+    storage.delete(movie=movie)
