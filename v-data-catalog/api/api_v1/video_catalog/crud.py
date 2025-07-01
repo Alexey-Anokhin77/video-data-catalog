@@ -62,6 +62,13 @@ class VideoStorage(BaseModel):
         )
         log.warning("Recovered data from storage file.")
 
+    def save_movie(self, movie: Movie):
+        redis.hset(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=movie.slug,
+            value=movie.model_dump_json(),
+        )
+
     # Получение списка
     def get(self) -> list[Movie]:
         return [
@@ -80,45 +87,44 @@ class VideoStorage(BaseModel):
 
     # Создание нового видео
     def create(self, video_in: MovieCreate) -> Movie:
-        film = Movie(
+        movie = Movie(
             **video_in.model_dump(),
         )
-        redis.hset(
-            name=config.REDIS_MOVIES_HASH_NAME,
-            key=film.slug,
-            value=film.model_dump_json(),
-        )
+        self.save_movie(movie)
         log.info("Movie successfully created!")
-        return film
+        return movie
 
     def delete_by_slug(self, slug: str) -> None:
         self.slug_to_video.pop(slug, None)
 
-    def delete(self, film: Movie) -> None:
-        self.delete_by_slug(slug=film.slug)
+    def delete(self, movie: Movie) -> None:
+        self.delete_by_slug(slug=movie.slug)
 
     def update(
         self,
-        film: Movie,
-        film_in: MovieUpdate,
+        movie: Movie,
+        movie_in: MovieUpdate,
     ) -> Movie:  # Получаем словарь с данными
-        update_data = film_in.model_dump()
+        update_data = movie_in.model_dump()
         # Обновляем поля
         for field_name, value in update_data.items():
-            setattr(film, field_name, value)
-        return film
+            setattr(movie, field_name, value)
+        self.save_movie(movie)
+
+        return movie
 
     def partial_update(
         self,
-        film: Movie,
-        film_in: MoviePartialUpdate,
+        movie: Movie,
+        movie_in: MoviePartialUpdate,
     ) -> Movie:
         # Получаем только переданные поля
-        update_data = film_in.model_dump(exclude_unset=True)
+        update_data = movie_in.model_dump(exclude_unset=True)
         # Обновляем только указанные поля
         for field_name, value in update_data.items():
-            setattr(film, field_name, value)
-        return film
+            setattr(movie, field_name, value)
+        self.save_movie(movie)
+        return movie
 
 
 storage = VideoStorage()

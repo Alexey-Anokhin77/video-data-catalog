@@ -55,11 +55,11 @@ def read_film_details(
 )
 def update_movie_details(
     film: MovieBySlug,
-    film_in: MovieUpdate,
+    movie_in: MovieUpdate,
 ):
     return storage.update(
-        film=film,
-        film_in=film_in,
+        movie=film,
+        movie_in=movie_in,
     )
 
 
@@ -68,12 +68,12 @@ def update_movie_details(
     response_model=MovieRead,
 )
 def update_movie_details_partial(
-    film: MovieBySlug,
-    film_in: MoviePartialUpdate,
+    movie: MovieBySlug,
+    movie_in: MoviePartialUpdate,
 ) -> Movie:
     return storage.partial_update(
-        film=film,
-        film_in=film_in,
+        movie=movie,
+        movie_in=movie_in,
     )
 
 
