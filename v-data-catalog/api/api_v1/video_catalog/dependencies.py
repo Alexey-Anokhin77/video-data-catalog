@@ -63,18 +63,6 @@ def read_film_slug(
     )
 
 
-def save_storage_state(
-    request: Request,
-    background_tasks: BackgroundTasks,
-):
-    # сначала код до входа внутрь view функции
-    yield
-    # код после покидания view функции
-    if request.method in UNSAFE_METHOD:
-        log.info("Add background task to save_storage")
-        background_tasks.add_task(storage.save_state)
-
-
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
 ):

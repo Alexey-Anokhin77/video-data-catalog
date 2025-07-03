@@ -7,8 +7,6 @@ from fastapi import (
 
 from api.api_v1.video_catalog.crud import storage
 from api.api_v1.video_catalog.dependencies import (
-    save_storage_state,
-    api_token_required_for_unsafe_methods,
     api_token_or_basic_auth_required_for_unsafe_methods,
 )
 
@@ -22,8 +20,6 @@ router = APIRouter(
     prefix="/film-catalog",
     tags=["Film catalog"],
     dependencies=[
-        Depends(save_storage_state),
-        # Depends(api_token_required_for_unsafe_methods),
         Depends(api_token_or_basic_auth_required_for_unsafe_methods),
     ],
     responses={
