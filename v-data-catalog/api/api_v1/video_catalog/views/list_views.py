@@ -6,7 +6,10 @@ from fastapi import (
 )
 
 
-from api.api_v1.video_catalog.crud import storage
+from api.api_v1.video_catalog.crud import (
+    storage,
+    MovieAlreadyExistsError,
+)
 from api.api_v1.video_catalog.dependencies import (
     api_token_or_basic_auth_required_for_unsafe_methods,
 )
@@ -65,10 +68,10 @@ def read_film_catalog_list() -> list[Movie]:
 def create_video(
     video_create: MovieCreate,
 ) -> Movie:
-    if not storage.get_by_slug(video_create.slug):
-        return storage.create(video_create)
-
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=f"Movie with slug={video_create.slug!r} already exist",
-    )
+    try:
+        return storage.create_or_raise_if_exists(video_create)
+    except MovieAlreadyExistsError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Movie with slug={video_create.slug!r} already exist",
+        )
