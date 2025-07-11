@@ -43,3 +43,10 @@ class AbstractTokensHelper(ABC):
         token = self.generate_token()
         self.add_token(token)
         return token
+
+    @abstractmethod
+    def get_tokens(self) -> list[str]:
+        """
+        Возвращает список всех токенов.
+        :return: list[str] - список всех токенов
+        """
