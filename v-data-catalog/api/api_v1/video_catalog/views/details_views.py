@@ -3,7 +3,6 @@ from typing import Annotated
 from fastapi import (
     APIRouter,
     Depends,
-    BackgroundTasks,
 )
 from starlette import status
 
@@ -56,7 +55,7 @@ def read_film_details(
 def update_movie_details(
     film: MovieBySlug,
     movie_in: MovieUpdate,
-):
+) -> Movie:
     return storage.update(
         movie=film,
         movie_in=movie_in,

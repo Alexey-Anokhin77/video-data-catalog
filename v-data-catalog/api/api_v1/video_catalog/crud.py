@@ -1,3 +1,5 @@
+__all__ = ("storage",)
+
 import logging
 
 from pydantic import BaseModel
@@ -35,7 +37,7 @@ class MovieAlreadyExistsError(MovieBaseError):
 
 class VideoStorage(BaseModel):
 
-    def save_movie(self, movie: Movie):
+    def save_movie(self, movie: Movie) -> None:
         redis.hset(
             name=config.REDIS_MOVIES_HASH_NAME,
             key=movie.slug,

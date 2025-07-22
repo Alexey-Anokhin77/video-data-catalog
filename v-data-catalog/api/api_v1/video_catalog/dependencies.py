@@ -3,7 +3,6 @@ from typing import Annotated
 
 from fastapi import (
     HTTPException,
-    BackgroundTasks,
     Request,
 )
 from fastapi.params import Depends
@@ -65,7 +64,7 @@ def read_film_slug(
 
 def validate_api_token(
     api_token: HTTPAuthorizationCredentials,
-):
+) -> None:
     if redis_tokens.token_exist(
         api_token.credentials,
     ):
@@ -82,7 +81,7 @@ def api_token_required_for_unsafe_methods(
         HTTPAuthorizationCredentials | None,
         Depends(static_api_token),
     ] = None,
-):
+) -> None:
     log.info("Api token: %s", api_token)
 
     if request.method not in UNSAFE_METHOD:
@@ -98,7 +97,7 @@ def api_token_required_for_unsafe_methods(
 
 def validate_basic_auth(
     credentials: HTTPBasicCredentials | None,
-):
+) -> None:
     if credentials and redis_users.validate_user_password(
         username=credentials.username,
         password=credentials.password,
@@ -118,7 +117,7 @@ def basic_user_auth_required_for_unsafe_methods(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     log.info("Users auth credentials: %s", credentials)
 
     if request.method not in UNSAFE_METHOD:
@@ -139,7 +138,7 @@ def api_token_or_basic_auth_required_for_unsafe_methods(
         HTTPBasicCredentials | None,
         Depends(user_basic_auth),
     ] = None,
-):
+) -> None:
     if request.method not in UNSAFE_METHOD:
         return
 

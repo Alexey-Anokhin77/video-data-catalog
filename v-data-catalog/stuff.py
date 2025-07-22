@@ -7,26 +7,3 @@ redis = Redis(
     db=config.REDIS_DB,
     decode_responses=True,
 )
-
-
-def main():
-    print(redis.ping())
-    redis.set("name", "Alexey")
-    redis.set("foo", "bar")
-    redis.set("number", "42")
-
-    print("name", redis.get("name"))
-    print(
-        [
-            redis.get("name"),
-            redis.get("foo"),
-            redis.get("number"),
-        ]
-    )
-
-    redis.delete("name")
-    print(redis.get("name"))
-
-
-if __name__ == "__main__":
-    main()
