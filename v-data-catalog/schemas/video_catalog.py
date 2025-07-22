@@ -48,11 +48,11 @@ class MoviePartialUpdate(FilmInfoBase):
     Модель для частичного обновления информации о фильме.
     """
 
-    title_film: str | None = None
-    time_film: float | None = None
-    description_film: DescriptionString | None = None
-    genre: Annotated[str, MaxLen(50)] | None = None
-    production_year: Annotated[int, Ge(1900), Le(2100)] | None = None
+    title_film: str
+    time_film: float
+    description_film: DescriptionString
+    genre: Annotated[str, MaxLen(50)]
+    production_year: Annotated[int, Ge(1900), Le(2100)]
 
 
 class MovieRead(FilmInfoBase):
