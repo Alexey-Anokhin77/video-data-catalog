@@ -1,5 +1,5 @@
-from redis import Redis
 from core import config
+from redis import Redis
 
 redis = Redis(
     host=config.REDIS_HOST,

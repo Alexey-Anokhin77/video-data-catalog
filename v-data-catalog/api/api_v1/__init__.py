@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from .video_catalog.views import router as video_catalog_router
 
 router = APIRouter(

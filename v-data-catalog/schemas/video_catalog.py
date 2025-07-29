@@ -1,10 +1,10 @@
 from typing import Annotated
 
 from annotated_types import (
-    Len,
-    MaxLen,
     Ge,
     Le,
+    Len,
+    MaxLen,
 )
 from pydantic import (
     BaseModel,

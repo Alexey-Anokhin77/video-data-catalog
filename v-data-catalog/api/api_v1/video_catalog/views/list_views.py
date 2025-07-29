@@ -1,23 +1,21 @@
 from fastapi import (
     APIRouter,
-    status,
     Depends,
     HTTPException,
+    status,
 )
-
-
-from api.api_v1.video_catalog.crud import (
-    storage,
-    MovieAlreadyExistsError,
-)
-from api.api_v1.video_catalog.dependencies import (
-    api_token_or_basic_auth_required_for_unsafe_methods,
-)
-
 from schemas.video_catalog import (
     Movie,
     MovieCreate,
     MovieRead,
+)
+
+from api.api_v1.video_catalog.crud import (
+    MovieAlreadyExistsError,
+    storage,
+)
+from api.api_v1.video_catalog.dependencies import (
+    api_token_or_basic_auth_required_for_unsafe_methods,
 )
 
 router = APIRouter(

@@ -6,24 +6,20 @@ from fastapi import (
     Request,
 )
 from fastapi.params import Depends
-
 from fastapi.security import (
     HTTPAuthorizationCredentials,
-    HTTPBearer,
-    HTTPBasicCredentials,
     HTTPBasic,
+    HTTPBasicCredentials,
+    HTTPBearer,
 )
-
-from starlette import status
-
-from api.api_v1.video_catalog.crud import storage
-
 from schemas.video_catalog import Movie
+from starlette import status
 
 from api.api_v1.auth.services import (
     redis_tokens,
     redis_users,
 )
+from api.api_v1.video_catalog.crud import storage
 
 log = logging.getLogger(__name__)
 
