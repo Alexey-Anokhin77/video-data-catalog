@@ -28,7 +28,7 @@ def check(
     print(
         f"Token [bold]{token}[/bold], [green]exists[/green]."
         if tokens.token_exist(token)
-        else f"Token [bold]{token}[/bold] [bold red]does not exists[/bold red]."
+        else f"Token [bold]{token}[/bold] [bold red]does not exists[/bold red].",
     )
 
 

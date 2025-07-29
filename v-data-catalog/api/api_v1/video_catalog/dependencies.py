@@ -29,7 +29,7 @@ UNSAFE_METHOD = frozenset(
         "PUT",
         "PATCH",
         "DELETE",
-    }
+    },
 )
 
 
