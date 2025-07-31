@@ -12,7 +12,6 @@ from fastapi.security import (
     HTTPBasicCredentials,
     HTTPBearer,
 )
-from schemas.video_catalog import Movie
 from starlette import status
 
 from api.api_v1.auth.services import (
@@ -20,6 +19,7 @@ from api.api_v1.auth.services import (
     redis_users,
 )
 from api.api_v1.video_catalog.crud import storage
+from schemas.video_catalog import Movie
 
 log = logging.getLogger(__name__)
 

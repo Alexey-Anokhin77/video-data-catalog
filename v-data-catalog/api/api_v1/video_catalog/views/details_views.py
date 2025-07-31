@@ -4,16 +4,16 @@ from fastapi import (
     APIRouter,
     Depends,
 )
+from starlette import status
+
+from api.api_v1.video_catalog.crud import storage
+from api.api_v1.video_catalog.dependencies import read_film_slug
 from schemas.video_catalog import (
     Movie,
     MoviePartialUpdate,
     MovieRead,
     MovieUpdate,
 )
-from starlette import status
-
-from api.api_v1.video_catalog.crud import storage
-from api.api_v1.video_catalog.dependencies import read_film_slug
 
 router = APIRouter(
     prefix="/{slug}",

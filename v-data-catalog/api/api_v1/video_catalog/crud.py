@@ -5,9 +5,10 @@ __all__ = (
 
 import logging
 
-from core import config
 from pydantic import BaseModel
 from redis import Redis
+
+from core import config
 from schemas.video_catalog import (
     Movie,
     MovieCreate,
