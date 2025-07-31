@@ -1,4 +1,7 @@
-__all__ = ("storage",)
+__all__ = (
+    "storage",
+    "MovieAlreadyExistsError",
+)
 
 import logging
 

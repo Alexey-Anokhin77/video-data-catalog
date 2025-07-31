@@ -68,8 +68,8 @@ def create_video(
 ) -> Movie:
     try:
         return storage.create_or_raise_if_exists(video_create)
-    except MovieAlreadyExistsError:
+    except MovieAlreadyExistsError as exc:  # Лучшее имя
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Movie with slug={video_create.slug!r} already exist",
-        )
+            detail=f"Movie with slug={video_create.slug!r} already exists",
+        ) from exc
