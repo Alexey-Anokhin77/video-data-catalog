@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]>=0.115.12",
     "redis[hiredis]>=6.2.0",
     "typer>=0.15.2",
+    "ruff>=0.12.5",
 ]
 
 [dependency-groups]
@@ -17,7 +18,8 @@ dev = [
 
 [tool.mypy]
 strict = true
-plugins = ['pydantic.mypy']
+plugins = ['pydantic.mypy',
+]
 
 
 # ruff settings
@@ -25,7 +27,7 @@ plugins = ['pydantic.mypy']
 [tool.ruff]
 required-version = ">=0.11.5"
 src = [
-    "url-shortener",
+    "v-data-catalog",
 ]
 
 
@@ -87,6 +89,16 @@ select = [
     "T10", # flake8-debugger (T10)
     "EM", # flake8-errmsg (EM)
     "ISC", # flake8-implicit-str-concat (ISC)
+    "ICN", # flake8-import-conventions (ICN)
+    "LOG", # flake8-logging (LOG)
+    "G", # flake8-logging-format (G)
+    "INP", # flake8-no-pep420 (INP)
+    "PIE", # flake8-pie (PIE)
+    "T20", # flake8-print (T20)
+    "PYI", # flake8-pyi (PYI)
+    # "PT", # flake8-pytest-style (PT)
+    "Q", # flake8-quotes (Q)
+    "RSE", # flake8-raise (RSE)
 ]
 
 ignore = [
