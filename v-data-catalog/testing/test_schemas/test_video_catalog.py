@@ -1,6 +1,7 @@
+import logging
 from unittest import TestCase
 
-from schemas.video_catalog import Movie, MovieCreate
+from schemas.video_catalog import Movie, MovieCreate, MovieUpdate
 
 
 class MovieCreateTestCase(TestCase):
@@ -42,3 +43,45 @@ class MovieCreateTestCase(TestCase):
             movie_in.production_year,
             movie.production_year,
         )
+
+
+class MovieUpdateTestCase(TestCase):
+    def test_movie_can_be_updated_from_update_schemas(self) -> None:
+        logging.basicConfig(level=logging.INFO)
+        # 1. Создаем исходный фильм (аналог movie_in в тесте создания)
+        original_movie = Movie(
+            slug="original-slug",
+            title_film="original-title",
+            genre="original-genre",
+            description_film="original-description",
+            time_film=90.0,
+            production_year=2000,
+            notes="original-notes",
+        )
+
+        # 2. Создаем данные для обновления (аналог MovieCreate в тесте создания)
+        update_data = MovieUpdate(
+            title_film="updated-title",
+            genre="updated-genre",
+            description_film="updated-description",
+            time_film=120.5,
+            production_year=2023,
+        )
+
+        # 3. Обновляем фильм (вместо создания нового)
+        updated_movie = original_movie.model_copy(
+            update=update_data.model_dump(exclude_unset=True)
+        )
+
+        logging.info("Результат обновления: %s", updated_movie)
+
+        # 4. Проверяем обновленные поля (аналогично тесту создания)
+        self.assertEqual(update_data.title_film, updated_movie.title_film)
+        self.assertEqual(update_data.description_film, updated_movie.description_film)
+        self.assertEqual(update_data.genre, updated_movie.genre)
+        self.assertEqual(update_data.time_film, updated_movie.time_film)
+        self.assertEqual(update_data.production_year, updated_movie.production_year)
+
+        # 5. Проверяем, что slug и notes не изменились
+        self.assertEqual(original_movie.slug, updated_movie.slug)
+        self.assertEqual(original_movie.notes, updated_movie.notes)
