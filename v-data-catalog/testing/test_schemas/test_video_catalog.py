@@ -1,7 +1,6 @@
-import logging
 from unittest import TestCase
 
-from schemas.video_catalog import Movie, MovieCreate, MovieUpdate
+from schemas.video_catalog import Movie, MovieCreate, MoviePartialUpdate, MovieUpdate
 
 
 class MovieCreateTestCase(TestCase):
@@ -47,7 +46,7 @@ class MovieCreateTestCase(TestCase):
 
 class MovieUpdateTestCase(TestCase):
     def test_movie_can_be_updated_from_update_schemas(self) -> None:
-        logging.basicConfig(level=logging.INFO)
+        # logging.basicConfig(level=logging.INFO)
         # 1. Создаем исходный фильм (аналог movie_in в тесте создания)
         original_movie = Movie(
             slug="original-slug",
@@ -70,10 +69,10 @@ class MovieUpdateTestCase(TestCase):
 
         # 3. Обновляем фильм (вместо создания нового)
         updated_movie = original_movie.model_copy(
-            update=update_data.model_dump(exclude_unset=True)
+            update=update_data.model_dump(exclude_unset=True),
         )
 
-        logging.info("Результат обновления: %s", updated_movie)
+        # logging.info("Результат обновления: %s", updated_movie)
 
         # 4. Проверяем обновленные поля (аналогично тесту создания)
         self.assertEqual(update_data.title_film, updated_movie.title_film)
@@ -85,3 +84,41 @@ class MovieUpdateTestCase(TestCase):
         # 5. Проверяем, что slug и notes не изменились
         self.assertEqual(original_movie.slug, updated_movie.slug)
         self.assertEqual(original_movie.notes, updated_movie.notes)
+
+
+class MoviePartialUpdateTestCase(TestCase):
+    def test_movie_can_be_partial_updated_from_update_schemas(self) -> None:
+        # logging.basicConfig(level=logging.INFO)
+        original_movie = Movie(
+            slug="original-slug",
+            title_film="original-title",
+            genre="some-genre",
+            description_film="some-description",
+            time_film=120.5,
+            production_year=1901,
+        )
+
+        movie_partial_update = MoviePartialUpdate(
+            genre="updated-genre",
+            time_film=121.5,
+        )
+
+        updated_partial_movie = original_movie.model_copy(
+            update=movie_partial_update.model_dump(exclude_unset=True),
+        )
+
+        # logging.info("Результат обновления: %s", movie_partial_update)
+        # logging.info("Оригинал: %s", original_movie)
+        # logging.info("Обновлённый: %s", updated_partial_movie)
+
+        self.assertEqual(updated_partial_movie.genre, "updated-genre")
+        self.assertEqual(updated_partial_movie.title_film, original_movie.title_film)
+        self.assertEqual(
+            updated_partial_movie.description_film,
+            original_movie.description_film,
+        )
+        self.assertEqual(updated_partial_movie.time_film, 121.5)
+        self.assertEqual(
+            updated_partial_movie.production_year,
+            original_movie.production_year,
+        )
