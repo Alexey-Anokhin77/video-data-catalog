@@ -4,7 +4,7 @@ from schemas.video_catalog import Movie, MovieCreate, MoviePartialUpdate, MovieU
 
 
 class MovieCreateTestCase(TestCase):
-    def test_move_can_be_created_from_create_schemas(self) -> None:
+    def test_movie_can_be_created_from_create_schemas(self) -> None:
         movie_in = MovieCreate(
             slug="some-slug",
             title_film="some-title",
@@ -42,6 +42,38 @@ class MovieCreateTestCase(TestCase):
             movie_in.production_year,
             movie.production_year,
         )
+
+    def test_movie_create_accepts_different_values(self) -> None:
+        test_movie_data = {
+            "title_film": "Test Title",
+            "time_film": 120.0,
+            "genre": "Test Genre",
+            "production_year": 2023,
+        }
+        test_case = [
+            {
+                "slug": "edge-case-1",
+                "description": "X" * 1000,  # Максимальная длина
+                "expected_len": 1000,  # Явная проверка граничного значения
+            },
+            {
+                "slug": "edge-case-2",
+                "description": "X",  # Минимальная длина
+                "expected_len": 1,
+            },
+        ]
+
+        for case in test_case:
+            with self.subTest(case=case):
+                movie = MovieCreate(
+                    slug=case["slug"],
+                    description_film=case["description"],
+                    **test_movie_data,
+                )
+
+                self.assertEqual(movie.slug, case["slug"])
+                self.assertEqual(movie.description_film, case["description"])
+                self.assertEqual(len(movie.description_film), case["expected_len"])
 
 
 class MovieUpdateTestCase(TestCase):
