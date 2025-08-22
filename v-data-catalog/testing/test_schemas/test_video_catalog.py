@@ -106,7 +106,7 @@ class MovieCreateTestCase(TestCase):
             expected_regex="String should have at least 3 characters",
         ):
             MovieCreate(
-                slug="a" * 120,
+                slug="a",
                 title_film="some-title",
                 genre="some-genre",
                 description_film="some-description",
