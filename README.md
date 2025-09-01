@@ -1,4 +1,4 @@
-Uo# FastAPI Video data catalog
+# FastAPI Video data catalog
 
 ## Develop
 
