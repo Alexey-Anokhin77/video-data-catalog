@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "coverage>=7.10.6",
     "mypy>=1.17.0",
 ]
 
