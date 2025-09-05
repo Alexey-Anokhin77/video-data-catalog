@@ -643,6 +643,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "coverage" },
+    { name = "httpx" },
     { name = "mypy" },
     { name = "pytest" },
 ]
@@ -657,6 +658,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "coverage", specifier = ">=7.10.6" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "mypy", specifier = ">=1.17.0" },
     { name = "pytest", specifier = ">=8.4.1" },
 ]
