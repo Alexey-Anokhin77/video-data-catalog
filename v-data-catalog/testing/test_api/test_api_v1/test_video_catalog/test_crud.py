@@ -31,6 +31,11 @@ def create_movie() -> Movie:
     return storage.create(movie_in)
 
 
+@pytest.fixture()
+def movie() -> Movie:
+    return create_movie()
+
+
 class VideoStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
         self.movie = create_movie()
@@ -114,9 +119,8 @@ class VideoStorageGetMoviesTestCase(TestCase):
                 )
 
 
-def test_create_or_raise_if_exists() -> None:
-    existing_movie = create_movie()
-    movie_create = MovieCreate(**existing_movie.model_dump())
+def test_create_or_raise_if_exists(movie: Movie) -> None:
+    movie_create = MovieCreate(**movie.model_dump())
     with pytest.raises(
         MovieAlreadyExistsError,
         match=movie_create.slug,
