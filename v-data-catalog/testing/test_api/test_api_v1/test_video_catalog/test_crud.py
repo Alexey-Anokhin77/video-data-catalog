@@ -1,5 +1,6 @@
 import random
 import string
+from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -32,8 +33,10 @@ def create_movie() -> Movie:
 
 
 @pytest.fixture()
-def movie() -> Movie:
-    return create_movie()
+def movie() -> Generator[Movie]:
+    movie = create_movie()
+    yield movie
+    storage.delete(movie)
 
 
 class VideoStorageUpdateTestCase(TestCase):
