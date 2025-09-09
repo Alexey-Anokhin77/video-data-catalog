@@ -32,7 +32,14 @@ class RedisTokenHelper(AbstractTokensHelper):
         self.redis.sadd(self.tokens_set, token)
 
     def get_tokens(self) -> list[str]:
-        return list(self.redis.smembers(self.tokens_set))
+        tokens = self.redis.smembers(self.tokens_set)
+
+        if isinstance(tokens, set):
+            return list(tokens)
+        msg = "Async Redis client used in sync context or cache trouble"
+        raise RuntimeError(
+            msg,
+        )
 
     def delete_token(self, token: str) -> None:
         self.redis.srem(self.tokens_set, token)
