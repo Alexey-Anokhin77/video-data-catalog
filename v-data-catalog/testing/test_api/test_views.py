@@ -2,12 +2,8 @@ import pytest
 from fastapi.testclient import TestClient
 from starlette.status import HTTP_200_OK
 
-from main import app
 
-client = TestClient(app)
-
-
-def test_root_view() -> None:
+def test_root_view(client: TestClient) -> None:
     response = client.get("/")
     assert response.status_code == HTTP_200_OK, response.text
     response_data = response.json()
@@ -26,7 +22,10 @@ def test_root_view() -> None:
         "!@#$%^&",
     ],
 )
-def test_root_view_custom_name(name: str) -> None:
+def test_root_view_custom_name(
+    name: str,
+    client: TestClient,
+) -> None:
     name = "John"
     query = {"name": name}
     response = client.get("/", params=query)
