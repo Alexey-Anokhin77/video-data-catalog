@@ -54,12 +54,12 @@ class MovieCreateTestCase(TestCase):
         }
         test_case = [
             {
-                "slug": "edge-case-1",
+                "slug": "edgecase1",
                 "description": "X" * 1000,  # Максимальная длина
                 "expected_len": 1000,  # Явная проверка граничного значения
             },
             {
-                "slug": "edge-case-2",
+                "slug": "edgecase2",
                 "description": "X",  # Минимальная длина
                 "expected_len": 1,
             },
