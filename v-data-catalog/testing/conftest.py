@@ -13,25 +13,40 @@ if getenv("TESTING") != "1":
     pytest.exit(msg)
 
 
-def create_movie() -> Movie:
-    movie_in = MovieCreate(
-        slug="".join(
-            random.choices(
-                string.ascii_letters,
-                k=8,
-            ),
-        ),
+def build_movie_create(slug: str) -> MovieCreate:
+    return MovieCreate(
+        slug=slug,
         description_film="Some description",
         time_film=1,
         title_film="Some Title",
         genre="Some Genre",
         production_year=1901,
     )
+
+
+def build_movie_create_random_slug() -> MovieCreate:
+    return build_movie_create(
+        slug="".join(
+            random.choices(
+                string.ascii_letters,
+                k=8,
+            ),
+        ),
+    )
+
+
+def create_movie(slug: str) -> Movie:
+    movie_in = build_movie_create(slug=slug)
+    return storage.create(movie_in)
+
+
+def movie_create_random_slug() -> Movie:
+    movie_in = build_movie_create_random_slug()
     return storage.create(movie_in)
 
 
 @pytest.fixture()
 def movie() -> Generator[Movie]:
-    movie = create_movie()
+    movie = movie_create_random_slug()
     yield movie
     storage.delete(movie)
