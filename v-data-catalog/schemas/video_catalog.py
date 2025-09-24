@@ -31,7 +31,7 @@ class MovieCreate(FilmInfoBase):
 
     slug: Annotated[
         str,
-        Len(min_length=3, max_length=100),
+        Len(min_length=3, max_length=10),
     ]
 
 
