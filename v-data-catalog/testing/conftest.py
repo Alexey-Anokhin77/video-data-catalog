@@ -17,12 +17,13 @@ def build_movie_create(
     slug: str,
     description_film: str = "Some description",
     production_year: int = 1901,
+    title_film: str = "Some Title",
 ) -> MovieCreate:
     return MovieCreate(
         slug=slug,
         description_film=description_film,
         time_film=1,
-        title_film="Some Title",
+        title_film=title_film,
         genre="Some Genre",
         production_year=production_year,
     )
@@ -31,6 +32,7 @@ def build_movie_create(
 def build_movie_create_random_slug(
     description_film: str = "Some description",
     production_year: int = 1901,
+    title_film: str = "Some Title",
 ) -> MovieCreate:
     return build_movie_create(
         slug="".join(
@@ -41,6 +43,7 @@ def build_movie_create_random_slug(
         ),
         description_film=description_film,
         production_year=production_year,
+        title_film=title_film,
     )
 
 
@@ -58,10 +61,12 @@ def create_movie(
 def movie_create_random_slug(
     description_film: str = "Some description",
     production_year: int = 1901,
+    title_film: str = "Some Title",
 ) -> Movie:
     movie_in = build_movie_create_random_slug(
         description_film=description_film,
         production_year=production_year,
+        title_film=title_film,
     )
     return storage.create(movie_in)
 

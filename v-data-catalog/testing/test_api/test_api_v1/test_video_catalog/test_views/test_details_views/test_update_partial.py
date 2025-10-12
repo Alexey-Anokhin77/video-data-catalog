@@ -40,7 +40,7 @@ class TestUpdatePartial:
         storage.delete(movie)
 
     @pytest.mark.parametrize(
-        "movie , new_description",
+        "movie, new_description",
         [
             pytest.param(
                 (MIN_YEAR, "Some description"),
