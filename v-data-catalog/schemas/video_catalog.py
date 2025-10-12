@@ -24,6 +24,9 @@ class FilmInfoBase(BaseModel):
     production_year: Annotated[int, Ge(1900), Le(2100)]
 
 
+DESCRIPTION_MAX_LENGTH = 200
+
+
 class MovieCreate(FilmInfoBase):
     """
     Модель создания фильма
@@ -31,7 +34,7 @@ class MovieCreate(FilmInfoBase):
 
     slug: Annotated[
         str,
-        Len(min_length=3, max_length=10),
+        Len(min_length=3, max_length=DESCRIPTION_MAX_LENGTH),
     ]
 
 
