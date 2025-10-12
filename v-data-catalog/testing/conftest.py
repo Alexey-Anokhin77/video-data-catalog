@@ -13,18 +13,25 @@ if getenv("TESTING") != "1":
     pytest.exit(msg)
 
 
-def build_movie_create(slug: str) -> MovieCreate:
+def build_movie_create(
+    slug: str,
+    description_film: str = "Some description",
+    production_year: int = 1901,
+) -> MovieCreate:
     return MovieCreate(
         slug=slug,
-        description_film="Some description",
+        description_film=description_film,
         time_film=1,
         title_film="Some Title",
         genre="Some Genre",
-        production_year=1901,
+        production_year=production_year,
     )
 
 
-def build_movie_create_random_slug() -> MovieCreate:
+def build_movie_create_random_slug(
+    description_film: str = "Some description",
+    production_year: int = 1901,
+) -> MovieCreate:
     return build_movie_create(
         slug="".join(
             random.choices(
@@ -32,16 +39,30 @@ def build_movie_create_random_slug() -> MovieCreate:
                 k=8,
             ),
         ),
+        description_film=description_film,
+        production_year=production_year,
     )
 
 
-def create_movie(slug: str) -> Movie:
-    movie_in = build_movie_create(slug=slug)
+def create_movie(
+    slug: str,
+    description_film: str = "Some description",
+) -> Movie:
+    movie_in = build_movie_create(
+        slug=slug,
+        description_film=description_film,
+    )
     return storage.create(movie_in)
 
 
-def movie_create_random_slug() -> Movie:
-    movie_in = build_movie_create_random_slug()
+def movie_create_random_slug(
+    description_film: str = "Some description",
+    production_year: int = 1901,
+) -> Movie:
+    movie_in = build_movie_create_random_slug(
+        description_film=description_film,
+        production_year=production_year,
+    )
     return storage.create(movie_in)
 
 
