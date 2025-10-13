@@ -60,7 +60,7 @@ class TestCreateInvalid:
     @pytest.fixture(
         params=[
             pytest.param(("a", "string_too_short"), id="too-short"),
-            pytest.param(("foo-bar-spam-eggs", "string_too_long"), id="too-long"),
+            pytest.param(("a" * 201, "string_too_long"), id="too-long"),
         ],
     )
     def movie_create_values(
