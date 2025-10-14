@@ -6,6 +6,8 @@ from fastapi.testclient import TestClient
 from api.api_v1.auth.services import redis_tokens
 from main import app
 
+pytestmark = pytest.mark.apitest
+
 
 @pytest.fixture()
 def client() -> Generator[TestClient]:

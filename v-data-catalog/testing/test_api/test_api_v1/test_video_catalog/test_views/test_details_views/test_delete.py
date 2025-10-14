@@ -21,6 +21,7 @@ def movie(request: SubRequest) -> Movie:
     return create_movie(request.param)
 
 
+@pytest.mark.apitest
 def test_delete(
     movie: Movie,
     auth_client: TestClient,

@@ -14,6 +14,7 @@ from testing.conftest import movie_create_random_slug
 logger = logging.getLogger(__name__)
 
 
+@pytest.mark.apitest
 class TestUpdate:
 
     @pytest.fixture()

@@ -12,6 +12,7 @@ from schemas.video_catalog import DESCRIPTION_MAX_LENGTH, Movie
 from testing.conftest import movie_create_random_slug
 
 
+@pytest.mark.apitest
 class TestUpdatePartial:
 
     CURRENT_YEAR = datetime.now(UTC).year
