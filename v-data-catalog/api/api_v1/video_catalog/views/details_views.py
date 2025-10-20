@@ -84,3 +84,15 @@ def delete_film(
     movie: MovieBySlug,
 ) -> None:
     storage.delete(movie=movie)
+
+
+@router.post(
+    "/transfer/",
+)
+def transfer_film(
+    # 1 / 0
+    # url: MovieBySlug,
+) -> dict[str, str]:
+    # Начинаем что-то делать...
+    # raise NotImplementedError
+    return {"Result": "work in progress"}
