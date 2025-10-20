@@ -32,6 +32,8 @@ console_output_style = "progress"
 markers = [
     "apitest: test any http api call",
 ]
+xfail_strict=true
+
 
 
 # mypy settings
