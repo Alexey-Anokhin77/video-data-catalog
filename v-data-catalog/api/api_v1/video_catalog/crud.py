@@ -69,7 +69,7 @@ class VideoStorage(BaseModel):
             **video_in.model_dump(),
         )
         self.save_movie(movie)
-        log.info("Movie successfully created!")
+        log.info("Movie successfully created %s", movie)
         return movie
 
     def exists(self, slug: str) -> bool:
