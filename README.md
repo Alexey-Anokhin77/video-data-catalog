@@ -15,11 +15,11 @@ Install pre-commit hook:
 pre-commit install
 ```
 
-### Install
+### Install dependencies
 
-Install packages:
+Install all packages:
 ```shell
-uv install
+uv sync
 ```
 
 ### Run
