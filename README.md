@@ -2,6 +2,8 @@
 
 ## Develop
 
+Check GH Action after any push.
+
 ### Setup:
 
 Right click `v-data-catalog` -> Mark directory as -> Sources root
