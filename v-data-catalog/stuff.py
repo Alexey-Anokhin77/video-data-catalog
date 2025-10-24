@@ -15,6 +15,7 @@ def add(a: int, b: int) -> int:
 
 
 def main() -> None:
+
     print(redis.ping())
     print(redis.ping())
 
@@ -31,6 +32,7 @@ def main() -> None:
     )
     redis.delete("name")
     print("name", redis.get("name"))
+    print("spam", redis.get("spam"))
 
 
 if __name__ == "__main__":
