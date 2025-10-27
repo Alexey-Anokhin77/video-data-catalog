@@ -21,6 +21,13 @@ dev = [
     "pytest-cov>=7.0.0",
 ]
 
+
+# uv settings
+
+[tool.uv]
+required-version = "~=0.9.5"
+
+
 #pytest settings
 
 [tool.pytest.ini_options]
