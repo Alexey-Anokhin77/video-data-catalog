@@ -19,7 +19,7 @@ dev = [
     "mypy>=1.17.0",
     "pytest>=8.4.1",
     "pytest-cov>=7.0.0",
-    "ruff>=0.11.5"
+    "ruff>=0.11.5",
 ]
 
 
@@ -55,7 +55,8 @@ plugins = ['pydantic.mypy',
 # ruff settings
 
 [tool.ruff]
-version = ">=0.11.5"
+required-version = ">=0.11.5"
+
 src = [
     "v-data-catalog",
 ]
