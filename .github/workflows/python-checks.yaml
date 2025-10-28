@@ -40,6 +40,6 @@ jobs:
       - name: Install the project
         run: uv sync --locked --all-extras --dev
       - name: Run mypy
-        run: mypy v-data-catalog
+        run: uv run mypy v-data-catalog
 
 
