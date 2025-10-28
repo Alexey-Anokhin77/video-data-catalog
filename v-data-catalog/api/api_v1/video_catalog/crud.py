@@ -4,6 +4,7 @@ __all__ = (
 )
 
 import logging
+from typing import cast, Iterable
 
 from pydantic import BaseModel
 from redis import Redis
@@ -51,7 +52,9 @@ class VideoStorage(BaseModel):
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
-            for value in redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+            for value in cast(
+                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+            )
         ]
 
     # Получение по slug
@@ -107,7 +110,7 @@ class VideoStorage(BaseModel):
 
     def partial_update(
         self,
-        movie: Movie
+        movie: Movie,
         movie_in: MoviePartialUpdate,
     ) -> Movie:
         # Получаем только переданные поля
