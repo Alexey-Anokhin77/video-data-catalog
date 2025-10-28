@@ -55,7 +55,7 @@ plugins = ['pydantic.mypy',
 # ruff settings
 
 [tool.ruff]
-required-version = ">=0.11.5"
+version = ">=0.11.5"
 src = [
     "v-data-catalog",
 ]
