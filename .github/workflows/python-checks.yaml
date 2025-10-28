@@ -36,12 +36,8 @@ jobs:
       - name: Run ruff
         uses: astral-sh/ruff-action@v3
         with:
-          args: 'check'
+          args: 'check --diff'
           version-file: 'pyproject.toml'
-      - name: Ruff show fixes
-        uses: astral-sh/ruff-action@v3
-        with:
-          args: 'check --show-fixes'
       - name: Run mypy
         run: uv run mypy v-data-catalog
 
