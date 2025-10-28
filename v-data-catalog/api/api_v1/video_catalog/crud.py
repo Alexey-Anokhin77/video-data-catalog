@@ -107,7 +107,7 @@ class VideoStorage(BaseModel):
 
     def partial_update(
         self,
-        movie: Movie,
+        movie: Movie
         movie_in: MoviePartialUpdate,
     ) -> Movie:
         # Получаем только переданные поля
