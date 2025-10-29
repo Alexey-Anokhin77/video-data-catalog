@@ -4,6 +4,8 @@ __all__ = (
 )
 
 import logging
+from collections.abc import Iterable
+from typing import cast
 
 from pydantic import BaseModel
 from redis import Redis
@@ -51,7 +53,10 @@ class VideoStorage(BaseModel):
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
-            for value in redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+            for value in cast(
+                Iterable[str],
+                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
+            )
         ]
 
     # Получение по slug
