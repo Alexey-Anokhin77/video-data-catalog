@@ -4,7 +4,8 @@ __all__ = (
 )
 
 import logging
-from typing import cast, Iterable
+from collections.abc import Iterable
+from typing import cast
 
 from pydantic import BaseModel
 from redis import Redis
@@ -53,7 +54,8 @@ class VideoStorage(BaseModel):
         return [
             Movie.model_validate_json(value)
             for value in cast(
-                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+                Iterable[str],
+                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
             )
         ]
 
