@@ -54,8 +54,7 @@ class VideoStorage(BaseModel):
         return [
             Movie.model_validate_json(value)
             for value in cast(
-                Iterable[str],
-                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
             )
         ]
 
