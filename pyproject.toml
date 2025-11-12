@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.115.12",
     "mypy>=1.17.1",
+    "pydantic-settings>=2.12.0",
     "redis[hiredis]>=6.2.0",
     "typer>=0.15.2",
     "types-redis>=4.6.0.20241004",
