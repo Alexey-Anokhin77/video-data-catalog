@@ -11,6 +11,7 @@ from pydantic import BaseModel
 from redis import Redis
 
 from core import config
+from core.config import settings
 from schemas.video_catalog import (
     Movie,
     MovieCreate,
@@ -21,8 +22,8 @@ from schemas.video_catalog import (
 log = logging.getLogger(__name__)
 
 redis = Redis(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
     db=config.REDIS_DB_MOVIES,
     decode_responses=True,
 )

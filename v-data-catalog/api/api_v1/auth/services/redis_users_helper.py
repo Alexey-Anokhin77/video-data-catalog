@@ -2,6 +2,7 @@ from redis import Redis
 
 from api.api_v1.auth.services.users_helper import AbstractUsersHelper
 from core import config
+from core.config import settings
 
 
 class RedisUsersHelper(AbstractUsersHelper):
@@ -26,7 +27,7 @@ class RedisUsersHelper(AbstractUsersHelper):
 
 
 redis_users = RedisUsersHelper(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
     db=config.REDIS_DB_USERS,
 )
