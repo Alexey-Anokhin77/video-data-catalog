@@ -10,7 +10,6 @@ from typing import cast
 from pydantic import BaseModel
 from redis import Redis
 
-from core import config
 from core.config import settings
 from schemas.video_catalog import (
     Movie,
@@ -24,7 +23,7 @@ log = logging.getLogger(__name__)
 redis = Redis(
     host=settings.redis.connection.host,
     port=settings.redis.connection.port,
-    db=config.REDIS_DB_MOVIES,
+    db=settings.redis.db.movies,
     decode_responses=True,
 )
 
@@ -42,10 +41,11 @@ class MovieAlreadyExistsError(MovieBaseError):
 
 
 class VideoStorage(BaseModel):
+    hash_name: str
 
     def save_movie(self, movie: Movie) -> None:
         redis.hset(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=movie.slug,
             value=movie.model_dump_json(),
         )
@@ -56,14 +56,14 @@ class VideoStorage(BaseModel):
             Movie.model_validate_json(value)
             for value in cast(
                 Iterable[str],
-                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
+                redis.hvals(name=self.hash_name),
             )
         ]
 
     # Получение по slug
     def get_by_slug(self, slug: str) -> Movie | None:
         if movies_data := redis.hget(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=slug,
         ):
             return Movie.model_validate_json(movies_data)
@@ -80,7 +80,7 @@ class VideoStorage(BaseModel):
 
     def exists(self, slug: str) -> bool:
         return redis.hexists(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=slug,
         )
 
@@ -93,7 +93,7 @@ class VideoStorage(BaseModel):
 
     def delete_by_slug(self, slug: str) -> None:
         """Удаляет фильм по slug. Не возвращает статус операции."""
-        redis.hdel(config.REDIS_MOVIES_HASH_NAME, slug)
+        redis.hdel(self.hash_name, slug)
 
     def delete(self, movie: Movie) -> None:
         self.delete_by_slug(slug=movie.slug)
@@ -125,4 +125,6 @@ class VideoStorage(BaseModel):
         return movie
 
 
-storage = VideoStorage()
+storage = VideoStorage(
+    hash_name=settings.redis.names.movies_hash_name,
+)
