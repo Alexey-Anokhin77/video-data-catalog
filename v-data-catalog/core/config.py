@@ -11,14 +11,17 @@ LOG_FORMAT: str = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 )
 
-REDIS_DB = 0
-REDIS_DB_TOKENS = 1
-REDIS_DB_USERS = 2
-REDIS_DB_MOVIES = 3
+
+class RedisDbConfig(BaseModel):
+    default: int = 0
+    tokens: int = 1
+    users: int = 2
+    movies: int = 3
 
 
-REDIS_TOKENS_SET_NAME = "tokens"
-REDIS_MOVIES_HASH_NAME = "movies"
+class RedisNameConfig(BaseModel):
+    tokens_set_name: str = "tokens"
+    movies_hash_name: str = "movies"
 
 
 class LoggingConfig(BaseModel):
@@ -34,6 +37,8 @@ class RedisConnectionConfig(BaseModel):
 
 class RedisConfig(BaseModel):
     connection: RedisConnectionConfig = RedisConnectionConfig()
+    db: RedisDbConfig = RedisDbConfig()
+    names: RedisNameConfig = RedisNameConfig()
 
 
 class Settings(BaseSettings):
