@@ -6,7 +6,6 @@ from pydantic import BaseModel, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MOVIES_STORAGE_FILEPATH = BASE_DIR / "movies.json"
 
 LOG_FORMAT: str = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
@@ -62,8 +61,10 @@ class RedisConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        cli_parse_args=True,
         case_sensitive=False,
+        env_file=BASE_DIR / ".env",
+        env_nested_delimiter="__",
+        env_prefix="VIDEO_DATA_CATALOG__",
     )
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
