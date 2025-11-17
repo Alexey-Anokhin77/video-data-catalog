@@ -1,8 +1,9 @@
 import logging
 from pathlib import Path
+from typing import Literal, Self
 
-from pydantic import BaseModel
-from pydantic_settings import BaseSettings
+from pydantic import BaseModel, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MOVIES_STORAGE_FILEPATH = BASE_DIR / "movies.json"
@@ -12,22 +13,40 @@ LOG_FORMAT: str = (
 )
 
 
+class LoggingConfig(BaseModel):
+    log_level_name: Literal[
+        "CRITICAL",
+        "ERROR",
+        "WARNING",
+        "INFO",
+        "DEBUG",
+    ] = "INFO"
+    log_format: str = LOG_FORMAT
+    date_format: str = "%Y-%m-%d %H:%M:%S"
+
+    @property
+    def log_level(self) -> int:
+        return logging.getLevelNamesMapping()[self.log_level_name]
+
+
 class RedisDbConfig(BaseModel):
     default: int = 0
     tokens: int = 1
     users: int = 2
     movies: int = 3
 
+    @model_validator(mode="after")
+    def check_db(self) -> Self:
+        db_values = list(self.model_dump().values())
+        if len(set(db_values)) != len(db_values):
+            error_msg = "Database numbers should be unique!"
+            raise ValueError(error_msg)
+        return self
+
 
 class RedisNameConfig(BaseModel):
     tokens_set_name: str = "tokens"
     movies_hash_name: str = "movies"
-
-
-class LoggingConfig(BaseModel):
-    log_level: int = logging.INFO
-    log_format: str = LOG_FORMAT
-    date_format: str = "%Y-%m-%d %H:%M:%S"
 
 
 class RedisConnectionConfig(BaseModel):
@@ -42,6 +61,10 @@ class RedisConfig(BaseModel):
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        cli_parse_args=True,
+        case_sensitive=False,
+    )
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
 
