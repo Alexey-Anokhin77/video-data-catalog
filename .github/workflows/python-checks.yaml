@@ -71,5 +71,6 @@ jobs:
       - name: Run python tests
         run: uv run pytest
         env:
+          TESTING: 1
           VIDEO_DATA_CATALOG__REDIS__CONNECTION__HOST: redis
           VIDEO_DATA_CATALOG__REDIS__CONNECTION__PORT: 6379
