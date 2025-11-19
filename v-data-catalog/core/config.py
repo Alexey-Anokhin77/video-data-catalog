@@ -116,5 +116,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(settings.redis.db)
-print(settings.logging)
